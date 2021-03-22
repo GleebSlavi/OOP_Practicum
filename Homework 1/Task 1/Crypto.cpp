@@ -2,7 +2,7 @@
 
 Crypto::Crypto()
 {
-	strcpy_s(cryptoName, 1, "\0");
+	cryptoName[0] = '\0';
 	lastPrice = 0;
 	currentPrice = 0;
 }
@@ -16,7 +16,14 @@ Crypto::Crypto(const char cryptoName[], double lastPrice, double currentPrice)
 
 void Crypto::setCryptoName(const char cryptoName[])
 {
-	strcpy_s(this->cryptoName, strlen(cryptoName) + 1, cryptoName);
+	if (strlen(cryptoName) <= 30)
+	{
+		strcpy_s(this->cryptoName, strlen(cryptoName) + 1, cryptoName);
+	}
+	else
+	{
+		std::cout << "Name too big!" << std::endl;
+	}
 }
 
 void Crypto::setLastPrice(double lastPrice)
