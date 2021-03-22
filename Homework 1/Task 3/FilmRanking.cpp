@@ -17,7 +17,7 @@ void FilmRanking::erase()
 
 FilmRanking::FilmRanking()
 {
-	filmsList = new Film[0];
+	filmsList = new Film[3];
 	filmsCount = 0;
 }
 
@@ -87,11 +87,8 @@ void FilmRanking::printTopFilms(int number)
 {
 	if (number > filmsCount)
 	{
-		do
-		{
-			std::cout << "Enter number smaller or equal than films count: ";
-			std::cin >> number;
-		} while (number > filmsCount);
+		std::cout << "Number bigger than films count!" << std::endl;
+		return;
 	}
 
 	this->sortFilms();
