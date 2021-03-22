@@ -5,7 +5,7 @@
 class Crypto
 {
 private:
-	char cryptoName[30];
+	char cryptoName[31];
 	double lastPrice;
 	double currentPrice;
 public:
