@@ -39,7 +39,7 @@ struct SmartFunc
 		this->reducePtr = reducePtr;
 	}
 
-	void useMap(Vector<T>& vec)
+	void useMap(Vector<T>& vec) const
 	{
 		if (mapPtr == nullptr)
 		{
@@ -47,13 +47,14 @@ struct SmartFunc
 			return;
 		}
 
-		for (size_t i = 0; i < vec.getVectorSize(); ++i)
+		size_t size = vec.getVectorSize();
+		for (size_t i = 0; i < size; ++i)
 		{
 			mapPtr(vec[i]);
 		}
 	}
 
-	void useFilter(Vector<T>& vec)
+	void useFilter(Vector<T>& vec) const
 	{
 		if (filterPtr == nullptr)
 		{
@@ -62,7 +63,8 @@ struct SmartFunc
 		}
 
 		Vector<T> newVector;
-		for (size_t i = 0; i < vec.getVectorSize(); ++i)
+		size_t size = vec.getVectorSize();
+		for (size_t i = 0; i < size; ++i)
 		{
 			if (filterPtr(vec[i]))
 			{
@@ -72,7 +74,7 @@ struct SmartFunc
 		vec = newVector;
 	}
 
-	T useReduce(Vector<T>& vec)
+	T useReduce(const Vector<T>& vec) const
 	{
 		if (reducePtr == nullptr)
 		{
@@ -81,7 +83,8 @@ struct SmartFunc
 		}
 
 		T reduceVariable = vec[0];
-		for (size_t i = 1; i < vec.getVectorSize(); ++i)
+		size_t size = vec.getVectorSize();
+		for (size_t i = 1; i < size; ++i)
 		{
 			reduceVariable = reducePtr(reduceVariable,vec[i]);
 		}
@@ -90,18 +93,33 @@ struct SmartFunc
 
 	void useFilterWithMap(Vector<T>& vec)
 	{
+		if (mapPtr == nullptr || filterPtr == nullptr)
+		{
+			std::cout << "Pointer doesnt point to function!" << std::endl;
+			return;
+		}
 		useFilter(vec);
 		useMap(vec);
 	}
 
 	T useFilterWithReduce(Vector<T>& vec)
 	{
+		if (reducePtr == nullptr || filterPtr == nullptr)
+		{
+			std::cout << "Pointer doesnt point to function!" << std::endl;
+			return 0;
+		}
 		useFilter(vec);
 		return useReduce(vec);
 	}
 
 	T useMapWithReduce(Vector<T>& vec)
 	{
+		if (mapPtr == nullptr || reducePtr == nullptr)
+		{
+			std::cout << "Pointer doesnt point to function!" << std::endl;
+			return 0;
+		}
 		useMap(vec);
 		return useReduce(vec);
 	}
